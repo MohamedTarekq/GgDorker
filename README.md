@@ -62,6 +62,10 @@ you can save your results in `cvs` or `txt` file
 # Demo 
 ![Alt text](images/demo.gif)
 
+## wordlist
+I used two wordlists `dorks.txt` and `OSINT_dorks.txt` 
+If you have a good wordlist feel free to issue pull requests with it! :)
+
 # Credits
 
 - This tool was inspired by [@knassar702](https://github.com/knassar702/startpage-parser)'s module. Thanks to him for the great idea!
