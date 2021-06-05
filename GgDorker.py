@@ -5,6 +5,7 @@ import re
 from multiprocessing.dummy import Pool
 import csv
 import argparse
+from urllib.parse import quote
 
 def logo():
     print(" ")
@@ -86,8 +87,9 @@ def save_txt(out,output):
     with open(output,'a') as txt:
         txt.write(str(out)+"\n")
 
-def main(dork):    
-        searcher = startpage(dork ,page)
+def main(dork): 
+        dork_encode = quote(dork)
+        searcher = startpage(dork_encode ,page)
         if searcher :
             if args.silent :
                 for link in searcher:
