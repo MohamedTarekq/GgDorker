@@ -47,7 +47,7 @@ dorks_list = []
 if dorks_file and args.target: 
     f = open(dorks_file, 'r')
     for line in f:
-        dorks_list.append(f"'{args.target}' "+line.strip())
+        dorks_list.append(f"{args.target} "+line.strip())
 elif query:
     dorks_list.append(query)
 
@@ -108,7 +108,8 @@ def main(dork):
                             out = link +" , "+dork    
                             save_txt(out,output)
         else:
-            print("["+colored("*","red",attrs=['bold'])+"] Checking " + "[" + colored(dork,"magenta",attrs=['bold']) +"] ["+ colored("-","yellow",attrs=['bold'])+"] "+ colored("No Results","yellow",attrs=['bold']))         
+            if not args.silent :
+                print("["+colored("*","red",attrs=['bold'])+"] Checking " + "[" + colored(dork,"magenta",attrs=['bold']) +"] ["+ colored("-","yellow",attrs=['bold'])+"] "+ colored("No Results","yellow",attrs=['bold']))         
 
 if __name__ == "__main__" :
     if not args.silent :
