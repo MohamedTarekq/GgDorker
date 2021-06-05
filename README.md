@@ -60,12 +60,14 @@ you can save your results in `cvs` or `txt` file
 ▶ python3 GgDorker.py -t site:twitter.com -d dorks.txt -o twitter_output.txt
 ```
 
+# wordlist
+I used two wordlists `dorks.txt` and `OSINT_dorks.txt` 
+If you have a good wordlist feel free to issue pull requests with it! :)
+
 # Demo 
 ![Alt text](images/demo.gif)
 
-## wordlist
-I used two wordlists `dorks.txt` and `OSINT_dorks.txt` 
-If you have a good wordlist feel free to issue pull requests with it! :)
+
 
 # Credits
 
