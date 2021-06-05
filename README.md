@@ -69,7 +69,7 @@ If you have a good wordlist feel free to issue pull requests with it! :)
 # Credits
 
 - This tool was inspired by [@knassar702](https://github.com/knassar702/startpage-parser)'s module. Thanks to him for the great idea!
-- Special thanks to [@Asem Eleraky](https://github.com/Melotover) who incouraged me to write this tool
+- Special thanks to [@Asem Eleraky](https://github.com/Melotover) who incouraged and supported me to write this tool
 
 # Donation
 If this tool helped you to get a bounty and you like it , feel free to give me a cup of coffee :) 
