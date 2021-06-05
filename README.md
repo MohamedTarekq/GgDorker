@@ -19,6 +19,7 @@
 ## Installation :
 
 ```bash
+git clone https://github.com/MohamedTarekq/GgDorker.git
 cd GgDorker
 python3 -m pip install -r requirements.txt
 python3 GgDorker -h
