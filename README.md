@@ -26,7 +26,7 @@ python3 GgDorker.py -h
 ```
 
 # Usage :
-Run dorks only on your target you must add ***site:*** before your domain such as **site:example.com** 
+Run dorks only on your target, you must add `site:` before your domain name such as **site:example.com** when using `dorks.txt` list
 ```
 ▶ python3 GgDorker.py -t site:twitter.com -d dorks.txt
 ```
