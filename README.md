@@ -40,9 +40,10 @@ You can run specific dork and set the number of pages by `-p` flag:
 ```
 ▶ python3 GgDorker.py -q "site:hackerone.com intext:information disclosure" -p 5
 ```
-And Yes, you can collect ***subdomains*** from google dorks, and Using `silent mode` by set `-s` flag:
+## Extract subdomains from Google Engine
+By using `--subs` and `silent mode` by set `-s` flag:
 ```
-▶ python3 GgDorker.py -q "site:*.twitter.com -www" -p 10 -s 
+▶  python3 GgDorker.py -t twitter.com --subs -p 50 -s
 ```
 
 ## Concurrency
