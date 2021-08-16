@@ -7,6 +7,7 @@ import csv
 import argparse
 from urllib.parse import quote
 
+
 def logo():
     print(" ")
     print(" ")
@@ -30,6 +31,7 @@ parser = argparse.ArgumentParser(description=colored("Simple python Tool That Au
 parser.add_argument("-d", "--dorks", help="dorks file ")
 parser.add_argument("-t", "--target", help="Your target (-t site:tesla.com| -t tesla.com | -t tesla)")
 parser.add_argument("-q", "--query", help="only query one dork")
+parser.add_argument("--subs", help="collect subdomains from Google",action="store_true")
 parser.add_argument("-s", "--silent", help="Silent Mode only Show The Results",action="store_true")
 parser.add_argument("-n", "--threads", help="Maximum n threads, default=5",default=5,type=int)
 parser.add_argument("-p", "--page", help="Number of pages, default=1",default=1,type=int)
@@ -42,8 +44,17 @@ page = args.page
 threads = args.threads
 query = args.query
 output = args.output
+subs = args.subs 
+
 
 dorks_list = []
+
+
+if args.target or query:
+    domain = args.target
+else :
+    raise SystemExit(colored("domain name is required","red",attrs=['bold'])  )
+
 if dorks_file and args.target: 
     f = open(dorks_file, 'r')
     for line in f:
@@ -51,14 +62,26 @@ if dorks_file and args.target:
 elif query:
     dorks_list.append(query)
 
-else:
-     raise SystemExit(colored("dorks file or your query is required ","red",attrs=['bold'])  )  
-
-if args.target or query:
+elif subs and args.target :
     domain = args.target
-else :
-    raise SystemExit(colored("domain name is required","red",attrs=['bold'])  )
+    dork1 =  f'site:*.{domain} -www'
+    dork2 = f'site:*.*.{domain}'
+    dorks_list.append(dork1)
+    dorks_list.append(dork2)
 
+else:
+    raise SystemExit(colored("dorks file or your query is required ","red",attrs=['bold'])  )  
+
+
+def filter_subs(links):
+    domains = []
+    for link in links :
+        split_site = link.strip().split('/')
+        if len(split_site) > 1:
+            domain = split_site[2]
+            domains.append(domain)                    
+    return set(domains)
+         
 def startpage(word,page):
     links = []
     headers={"User-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0"}
@@ -78,6 +101,35 @@ def startpage(word,page):
             print(e)
     return links 
 
+def main(dork): 
+    dork_encode = quote(dork)
+    searcher = startpage(dork_encode ,page)
+    if subs :
+        domains = filter_subs(searcher)
+        for domain in domains :
+            print(domain)
+            if output :
+                save_txt(domain,output)
+            
+    elif searcher :
+        if args.silent :
+            for link in searcher:
+                prin(link)   
+        else:
+            print("\n["+colored("*","red",attrs=['bold'])+"] Checking " + "[" +colored(dork,"magenta",attrs=['bold']) + "]" + colored(f" ({len(searcher)}) Results","cyan",attrs=['bold']))
+            for link in searcher:           
+                print("\t["+colored("+","green",attrs=['bold'])+"] "+ link) 
+                if output :
+                    if "csv" in output:
+                        out = [link , dork]
+                        save_csv(out,output)
+                    else:
+                        out = link +" , "+dork    
+                        save_txt(out,output)
+    else:
+        if not args.silent :
+            print("["+colored("*","red",attrs=['bold'])+"] Checking " + "[" + colored(dork,"magenta",attrs=['bold']) +"] ["+ colored("-","yellow",attrs=['bold'])+"] "+ colored("No Results","yellow",attrs=['bold']))         
+
 def save_csv(out,output):
     with open(output, "a") as csvfile:
         r = csv.writer(csvfile)
@@ -86,30 +138,6 @@ def save_csv(out,output):
 def save_txt(out,output):
     with open(output,'a') as txt:
         txt.write(str(out)+"\n")
-
-def main(dork): 
-        dork_encode = quote(dork)
-        searcher = startpage(dork_encode ,page)
-        if searcher :
-            if args.silent :
-                for link in searcher:
-                    print(link)
-                    # out = [link , dork]
-                    # save(out,output)
-            else:
-                print("["+colored("*","red",attrs=['bold'])+"] Checking " + "[" +colored(dork,"magenta",attrs=['bold']) + "]" + colored(f" ({len(searcher)}) Results","cyan",attrs=['bold']))
-                for link in searcher:           
-                    print("\t["+colored("+","green",attrs=['bold'])+"] "+ link) 
-                    if output :
-                        if "csv" in output:
-                            out = [link , dork]
-                            save_csv(out,output)
-                        else:
-                            out = link +" , "+dork    
-                            save_txt(out,output)
-        else:
-            if not args.silent :
-                print("["+colored("*","red",attrs=['bold'])+"] Checking " + "[" + colored(dork,"magenta",attrs=['bold']) +"] ["+ colored("-","yellow",attrs=['bold'])+"] "+ colored("No Results","yellow",attrs=['bold']))         
 
 if __name__ == "__main__" :
     if not args.silent :
@@ -120,7 +148,5 @@ if __name__ == "__main__" :
     pool.join()
     if output :
         print(colored(f"\nAll Results Saved In {output} file","green",attrs=['bold']) )          
-
-
 
 
